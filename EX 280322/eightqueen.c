@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int board[8], count;
+int chess[8], count;
 
 void print(int n)
 {
@@ -16,7 +16,7 @@ void print(int n)
         printf("\n\n%d", i);
         for (j = 1; j <= n; j++) 
         {
-            if (board[i] == j)
+            if (chess[i] == j)
                 printf("\tQ"); 
             else
                 printf("\t-"); 
@@ -29,9 +29,9 @@ int place(int row, int col)
     int i;
     for (i = 1; i <= row - 1; i++)
     {
-        if (board[i] == col)
+        if (chess[i] == col)
             return 0;
-        else if (abs(board[i] - col) == abs(i - row))
+        else if (abs(chess[i] - col) == abs(i - row))
             return 0;
     }
 
@@ -45,7 +45,7 @@ void queen(int row, int n)
     {
         if (place(row, col))
         {
-            board[row] = col; 
+            chess[row] = col; 
             if (row == n)        
                 print(n);        
             else                 
