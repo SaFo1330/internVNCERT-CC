@@ -128,23 +128,23 @@ void deleteNode(LinkList * temp)
 
 int main()
 {
-	LinkList * sll = getLinkList();
+	LinkList * head = getLinkList();
 	// thêm node
-	push(sll, 7);
-	push(sll, 2);
-	push(sll, 10);
-	push(sll, 3);
-	push(sll, 9);
-	push(sll, 54);
-	push(sll, 5);
-	push(sll, 31);
-	push(sll, 10);
+	push(head, 0);
+	push(head, 0);
+	push(head, 0);
+	push(head, 0);
+	push(head, 0);
+	push(head, 1);
+	push(head, 0);
+	push(head, 0);
+	push(head, 0);
 	
 	printf(" Danh sach lien ket ban dau \n");
-	output(sll);
+	output(head);
 
-	deleteNode(sll);
+	deleteNode(head);
 
 	printf(" Danh sach lien ket sau khi xoa\n");
-	output(sll);
+	output(head);
 }

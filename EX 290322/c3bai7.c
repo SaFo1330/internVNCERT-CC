@@ -4,9 +4,7 @@
 typedef struct Node
 {
     int data;
-    struct Node *next;
-    struct Node * head;
-   	struct Node * tail; //tạo cấu trúc Node
+    struct Node *next; //tạo cấu trúc Node
 }Node;
 
 Node *CreateNode(int data){
@@ -19,12 +17,17 @@ Node *CreateNode(int data){
     temp->data = data; // Gán giá trị cho Node
     return temp;//Trả về node mới đã có giá trị
 }
+typedef struct LinkList
+{
+	// xác định đầu đuôi của dslk đơn
+	struct Node * head;
+	struct Node * tail;
+}LinkList;
 
-
-Node * getLinkList() // tạo dslk đơn
+LinkList * getLinkList() // tạo dslk đơn
 {
 	// tạo bộ nhớ động
-	Node * temp = (Node * ) malloc(sizeof(Node));
+	LinkList * temp = (LinkList * ) malloc(sizeof(LinkList));
 	if (temp == NULL)
 	{ 
 		return NULL;
@@ -35,7 +38,7 @@ Node * getLinkList() // tạo dslk đơn
 	return temp;
 }
 
-void push(Node * temp, int data)
+void push(LinkList * temp, int data)
 {
 	Node * node = CreateNode(data);
 	if (temp->head == NULL)
@@ -52,7 +55,7 @@ void push(Node * temp, int data)
 	temp->tail = node;
 }
 
-void output(Node * temp)
+void output(LinkList * temp)
 {
 	if (temp->head == NULL)
 	{
@@ -69,47 +72,78 @@ void output(Node * temp)
 	printf(" NULL\n");
 }
 
-void removeDuplicates(struct Node* head)
+void deleteNode(LinkList * temp)
 {
-    // do nothing if the list is empty
-    if (head == NULL) {
-        return;
-    }
- 
-    struct Node* current = head;
- 
-    // compare the current node with the next node
-    while (current->next != NULL)
-    {
-        if (current->data == current->next->data)
-        {
-            struct Node* nextNext = current->next->next;
-            free(current->next);
-            current->next = nextNext;
-        }
-        else {
-            current = current->next;    // only advance if no deletion
-        }
-    }
+	Node * current = temp->head;
+	Node * auxiliary = NULL;
+	Node * back = NULL;
+	// lặp lại các phần tử danh sách liên kết
+	while (current->next != NULL)
+	{
+		if (current->data == current->next -> data)
+		{
+			// khi nhân được chẵn
+			auxiliary = current;
+		}
+		else
+		{
+			back = current;
+		}
+	    // tiếp tục trỏ tiếp
+		current = current->next;
+		if (auxiliary != NULL)
+		{
+			
+			if (temp->tail == auxiliary)
+			{
+				// Case A
+				// khi loại bỏ hết quay về back
+				temp->tail = back;
+			}
+			if (back == NULL)
+			{
+				// Case B
+				/* Khi nút phía trước là nút chẵn
+                 truy cập đầu đến nút tiếp theo */
+				temp->head = current;
+			}
+			else
+			{
+				// Case C
+				/*Nút đã xóa tồn tại ở trạng thái trung gian hoặc
+				vị trí cuối cùng của danh sách liên kết.
+				Trước khi xóa nút có nút bên trái đang kết nối với
+                nút sắp tới tiếp theo.
+				*/
+				back->next = current;
+			}
+			// Hủy liên kết đã xóa
+			auxiliary->next = NULL;
+          	free(auxiliary);
+			
+			auxiliary = NULL;
+		}
+	}
 }
+
 int main()
 {
-	Node * sll = getLinkList();
+	LinkList * sll = getLinkList();
 	// thêm node
-	push(sll, 7);
+	push(sll, 1);
+	push(sll, 1);
 	push(sll, 2);
-	push(sll, 10);
 	push(sll, 3);
-	push(sll, 9);
-	push(sll, 54);
+	push(sll, 3);
+	push(sll, 3);
+	push(sll, 4);
 	push(sll, 5);
-	push(sll, 31);
-	push(sll, 10);
+	push(sll, 5);
 	
 	printf(" Danh sach lien ket ban dau \n");
 	output(sll);
 
-	removeDuplicates(sll);
+	deleteNode(sll);
 
 	printf(" Danh sach lien ket sau khi xoa\n");
 	output(sll);
